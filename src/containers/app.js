@@ -10,13 +10,17 @@ const API_KEY = 'api_key=25574e6cf05efdc183382e06af719cfc'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = { movieList: {}, currentMovie: {} }
   }
   UNSAFE_componentWillMount() {
     axios.get(`${API_END_POINT}${POPULAR_MOVIES_URL}&${API_KEY}`)
       .then( function(response) {
         console.log(response)
-      })  
+        this.setState({ movieList: response.data.results.slice(1,6), currentMovie: response.data.results[0] })
+        // on affecte le plus populaire au film courant et les 5 suivants dans la liste des 5 films
+        console.log(this.state.currentMovie)
+        console.log(this.state.movieList)
+        }.bind(this))
   }
   render() {
     return (
