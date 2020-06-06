@@ -9,12 +9,10 @@ class SearchBar extends Component {
     return (
       <div>
         <input onChange = { this.handleChange.bind(this) } placeholder = { this.state.placeHolder }/>
-        <p>{ this.state.searchText }</p>
       </div>
     )
   }
   handleChange(event){
-    console.log(event.target.value)
     // on ne peut pas mettre à jour le state directement
     // this.state.searchText = event.target.value
     // il faut utiliser setState
