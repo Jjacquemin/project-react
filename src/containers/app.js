@@ -14,17 +14,26 @@ class App extends Component {
     this.state = { movieList: {}, currentMovie: {} }
   }
   UNSAFE_componentWillMount() {
+    this.initMovies()
+  }
+  initMovies(){
     axios.get(`${API_END_POINT}${POPULAR_MOVIES_URL}&${API_KEY}`)
-      .then( function(response) {
-        this.setState({ movieList: response.data.results.slice(1,6), currentMovie: response.data.results[0] })
+      .then(function(response){
+        this.setState({movieList:response.data.results.slice(1,6),currentMovie:response.data.results[0]})
         // on affecte le plus populaire au film courant et les 5 suivants dans la liste des 5 films
-        }.bind(this))
+      }.bind(this))
   }
   render() {
+    // render déclenché trop tôt par rapport à la requête, on doit s'assurer que la liste est renseignée pour afficher la video list
+    const renderVideoList = () => {
+      if (this.state.movieList.length>=5) {
+        return <VideoList movieList={this.state.movieList}/>
+      }
+    }
     return (
       <div>
         <SearchBar/>
-        <VideoList/>
+        {renderVideoList()}
         <VideoDetail title={this.state.currentMovie.title} description={this.state.currentMovie.overview}/>
       </div>
     ) 
