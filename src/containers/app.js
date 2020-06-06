@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import SearchBar from '../components/search-bar'
 import VideoList from './video-list'
+import VideoDetail from '../components/video-detail'
 import axios from 'axios'
 
 const API_END_POINT = 'https://api.themoviedb.org/3/'
@@ -15,11 +16,8 @@ class App extends Component {
   UNSAFE_componentWillMount() {
     axios.get(`${API_END_POINT}${POPULAR_MOVIES_URL}&${API_KEY}`)
       .then( function(response) {
-        console.log(response)
         this.setState({ movieList: response.data.results.slice(1,6), currentMovie: response.data.results[0] })
         // on affecte le plus populaire au film courant et les 5 suivants dans la liste des 5 films
-        console.log(this.state.currentMovie)
-        console.log(this.state.movieList)
         }.bind(this))
   }
   render() {
@@ -27,6 +25,7 @@ class App extends Component {
       <div>
         <SearchBar/>
         <VideoList/>
+        <VideoDetail title={this.state.currentMovie.title} description={this.state.currentMovie.overview}/>
       </div>
     ) 
   }
