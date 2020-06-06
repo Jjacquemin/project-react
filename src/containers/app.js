@@ -41,6 +41,7 @@ class App extends Component {
   onClickListItem(movie){
     this.setState({currentMovie : movie}, function() {
       this.applyVideoToCurrentMovie()
+      this.setRecommendations()
     })
   }
   onClickSearchBar(searchText){
@@ -51,11 +52,18 @@ class App extends Component {
             if (response.data.results[0].id !== this.state.currentMovie.id) {
               this.setState({currentMovie:response.data.results[0]}, () =>{
                 this.applyVideoToCurrentMovie()
+                this.setRecommendations()
               })
             }
           }
         }.bind(this))
     }
+  }
+  setRecommendations() {
+    axios.get(`${API_END_POINT}movie/${this.state.currentMovie.id}/recommendations?&${API_KEY}&language=fr`)
+      .then(function(response){
+        this.setState({movieList:response.data.results.slice(0,5)})
+      }.bind(this))
   }
   render() {
     // render déclenché trop tôt par rapport à la requête, on doit s'assurer que la liste est renseignée pour afficher la video list
