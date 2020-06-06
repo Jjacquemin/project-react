@@ -6,9 +6,15 @@ const VideoListItem = props => {
   const {movie} = props
   console.log(movie)
   return (
-    <li>
-      <img height='100px' width='100px' src={`${IMAGE_BASE_URL}${movie.poster_path}`} alt='Non trouvée'/>
-      <h5>{ movie.title }</h5>
+    <li className="list-group-item">
+      <div className="media">
+        <div className="media-left">
+          <img className="media-object img-rounded" height='100px' width='100px' src={`${IMAGE_BASE_URL}${movie.poster_path}`} alt='Non trouvée'/>
+        </div>
+        <div className="media-body">
+          <h5 className="title_list_item">{ movie.title }</h5>
+        </div>
+      </div>
     </li>
   ) 
 }

@@ -4,6 +4,7 @@ import VideoList from './video-list'
 import VideoDetail from '../components/video-detail'
 import Video from '../components/video'
 import axios from 'axios'
+import '../style/style.css'
 
 const API_END_POINT = 'https://api.themoviedb.org/3/'
 const POPULAR_MOVIES_URL = 'discover/movie?language=fr&sort_by=popularity.desc&include_adult=false&append_to_response=images'
@@ -45,10 +46,18 @@ class App extends Component {
     }
     return (
       <div>
-        <SearchBar/>
-        {renderVideoList()}
-        <Video videoId={this.state.currentMovie.videoId}/>
-        <VideoDetail title={this.state.currentMovie.title} description={this.state.currentMovie.overview}/>
+        <div className="search_bar">
+          <SearchBar/>
+        </div>
+        <div className="row">
+          <div className="col-md-8">
+            <Video videoId={this.state.currentMovie.videoId}/>
+            <VideoDetail title={this.state.currentMovie.title} description={this.state.currentMovie.overview}/>
+          </div>
+          <div className="col-md-4">
+            {renderVideoList()}
+          </div>
+        </div>
       </div>
     ) 
   }
