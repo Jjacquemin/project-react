@@ -7,11 +7,14 @@ const VideoList = (props) => {
     <div>
       <ul>
         { movieList.map(movie => {
-          return <VideoListItem key={movie.id} movie={movie}/>
+          return <VideoListItem key={movie.id} movie={movie} callback={receiveMovie}/>
         })}
       </ul>
     </div>
   )
+  function receiveMovie(movie){
+    props.callback(movie)
+  }
 }
 
 export default VideoList

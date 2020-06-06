@@ -37,11 +37,16 @@ class App extends Component {
         this.setState({currentMovie : newCurrentMovieState})
       }.bind(this))
   }
+  onClickListItem(movie){
+    this.setState({currentMovie : movie}, function() {
+      this.applyVideoToCurrentMovie()
+    })
+  }
   render() {
     // render déclenché trop tôt par rapport à la requête, on doit s'assurer que la liste est renseignée pour afficher la video list
     const renderVideoList = () => {
       if (this.state.movieList.length>=5) {
-        return <VideoList movieList={this.state.movieList}/>
+        return <VideoList movieList={this.state.movieList} callback={this.onClickListItem.bind(this)}/>
       }
     }
     return (
