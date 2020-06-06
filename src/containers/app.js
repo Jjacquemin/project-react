@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import SearchBar from '../components/search-bar'
 import VideoList from './video-list'
 import VideoDetail from '../components/video-detail'
+import Video from '../components/video'
 import axios from 'axios'
 
 const API_END_POINT = 'https://api.themoviedb.org/3/'
@@ -19,8 +20,20 @@ class App extends Component {
   initMovies(){
     axios.get(`${API_END_POINT}${POPULAR_MOVIES_URL}&${API_KEY}`)
       .then(function(response){
-        this.setState({movieList:response.data.results.slice(1,6),currentMovie:response.data.results[0]})
+        this.setState({movieList:response.data.results.slice(1,6),currentMovie:response.data.results[0]}, function(){
+          this.applyVideoToCurrentMovie()
+        })
         // on affecte le plus populaire au film courant et les 5 suivants dans la liste des 5 films
+        // on va chercher la vidéo du film le plus populaire
+      }.bind(this))
+  }
+  applyVideoToCurrentMovie(){
+    axios.get(`${API_END_POINT}movie/${this.state.currentMovie.id}?append_to_response=videos&include_adult=false&${API_KEY}`)
+      .then(function(response){
+        const youtubeKey = response.data.videos.results[0].key
+        let newCurrentMovieState = this.state.currentMovie
+        newCurrentMovieState.videoId = youtubeKey
+        this.setState({currentMovie : newCurrentMovieState})
       }.bind(this))
   }
   render() {
@@ -34,6 +47,7 @@ class App extends Component {
       <div>
         <SearchBar/>
         {renderVideoList()}
+        <Video videoId={this.state.currentMovie.videoId}/>
         <VideoDetail title={this.state.currentMovie.title} description={this.state.currentMovie.overview}/>
       </div>
     ) 
